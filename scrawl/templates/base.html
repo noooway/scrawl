@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Scrawl</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="sidenav">
+      <ul id="navtree">
+      {% for pagenav in pages.children recursive %}
+      {% if pagenav.children %}
+      <li><span class="caret">{{ pagenav.name }}</span>
+        <ul class="nested">
+          {{ loop(pagenav.children) }}
+        </ul>
+      </li>
+      {% else %}
+      <li> <a href="/pages/{{pagenav.relpath}}">{{ pagenav.name }}</a> </li>
+      {% endif %}
+      {% endfor %}
+      </ul>
+    </div>
+
+    <section class="main">
+      <div contenteditable="true" id="content">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <button type="save_btn" onclick="save_content(this);">Save</button>
+
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %}
+    </section>
+
+
+    <script>
+      /* https://www.w3schools.com/howto/howto_js_treeview.asp */
+      var toggler = document.getElementsByClassName("caret");
+      var i;
+
+      for (i = 0; i < toggler.length; i++) {
+          toggler[i].addEventListener("click", function() {
+              this.parentElement.querySelector(".nested").classList.toggle("active");
+              this.classList.toggle("caret-down");
+          });
+      }
+    </script>
+    <script>
+      function save_content(btn) {
+          var content = document.getElementById("content").innerHTML;
+          var path = "{{ request.path }}";
+          console.log(path);
+          console.log(content);
+          /*jQuery.post(
+              '/pages/' + path,
+              {content: content}
+          ).done(function(response) {
+              console.log("Saved!")
+          }).fail(function() {
+              console.log("Failed to Save!")
+          });*/
+      }
+  </script>
+  </body>
+</html>
