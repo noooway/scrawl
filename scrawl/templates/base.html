@@ -56,14 +56,14 @@
           var path = "{{ request.path }}";
           console.log(path);
           console.log(content);
-          /*jQuery.post(
-              '/pages/' + path,
+          jQuery.post(
+              path,
               {content: content}
           ).done(function(response) {
               console.log("Saved!")
           }).fail(function() {
               console.log("Failed to Save!")
-          });*/
+          });
       }
   </script>
   </body>

@@ -1,6 +1,6 @@
 import os
 from flask import (
-    Blueprint, render_template,
+    Blueprint, render_template, request,
     current_app
 )
 
@@ -16,9 +16,25 @@ def index():
     return render_template(current_page, pages=pages)
 
 
-@bp.route('/pages/<path:filename>')
+@bp.route('/pages/<path:filename>', methods=('GET', 'POST'))
 def render_page(filename):
     path = current_app.config['PAGESPATH']
+    if request.method == 'POST':
+        content = request.form['content']
+        # todo: avoid template language altogether; use divs.
+        # todo: move template wrapping to separate function
+        template = """
+        {{% extends 'base.html' %}}
+
+        {{% block content %}}
+        {content}
+        {{% endblock %}}
+        """
+        print(template.format(content=content))
+        # todo: use system separator
+        fullpath = '/'.join([path, filename])
+        with open(fullpath, 'w') as f:
+            f.write(template.format(content=content))
     pages = get_pages_tree(path)
     current_page = filename
     return render_template(current_page, pages=pages)
