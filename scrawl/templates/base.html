@@ -26,9 +26,8 @@
     </div>
 
     <section class="main">
-      <div contenteditable="true" id="content">
-        {% block content %}
-        {% endblock %}
+      <div id="editable" contenteditable="true">
+        {{ content | safe }}
       </div>
       <button type="save_btn" onclick="save_content(this);">Save</button>
 
@@ -52,7 +51,7 @@
     </script>
     <script>
       function save_content(btn) {
-          var content = document.getElementById("content").innerHTML;
+          var content = document.getElementById("editable").innerHTML;
           var path = "{{ request.path }}";
           console.log(path);
           console.log(content);

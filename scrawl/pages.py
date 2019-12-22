@@ -12,8 +12,8 @@ bp = Blueprint('pages', __name__)
 def index():
     path = current_app.config['PAGESPATH']
     pages = get_pages_tree(path)
-    current_page = 'default.html'
-    return render_template(current_page, pages=pages)
+    content = '<div id="content">' + 'Scrawl!' + '</div>'
+    return render_template('base.html', pages=pages, content=content)
 
 
 @bp.route('/pages/<path:filename>', methods=('GET', 'POST'))
@@ -21,23 +21,17 @@ def render_page(filename):
     path = current_app.config['PAGESPATH']
     if request.method == 'POST':
         content = request.form['content']
-        # todo: avoid template language altogether; use divs.
-        # todo: move template wrapping to separate function
-        template = """
-        {{% extends 'base.html' %}}
-
-        {{% block content %}}
-        {content}
-        {{% endblock %}}
-        """
-        print(template.format(content=content))
+        print(content)
         # todo: use system separator
         fullpath = '/'.join([path, filename])
         with open(fullpath, 'w') as f:
-            f.write(template.format(content=content))
+            f.write(content)
     pages = get_pages_tree(path)
     current_page = filename
-    return render_template(current_page, pages=pages)
+    fullpath = '/'.join([path, filename])
+    with open(fullpath, 'r') as f:
+        content = f.read()
+    return render_template('base.html', pages=pages, content=content)
 
 
 def get_pages_tree(path):
