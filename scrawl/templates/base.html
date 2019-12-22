@@ -15,6 +15,14 @@
       <li> <a href="/pages/{{pagename}}">{{ pagename }}</a> </li>
       {% endfor %}
       </ul>
+      <br>
+      <!-- todo: insert on right button; allow delete and rename pages -->
+      <form action="{{ url_for('pages.create_page') }}" method="post"
+            style="margin-left:5px">
+        Create New Page:
+        <input type="text" name="page_name">
+        <input type="submit" value="Create">
+      </form>
     </div>
 
     <section class="main">
@@ -34,18 +42,6 @@
     </section>
 
 
-    <script>
-      /* https://www.w3schools.com/howto/howto_js_treeview.asp */
-      var toggler = document.getElementsByClassName("caret");
-      var i;
-
-      for (i = 0; i < toggler.length; i++) {
-          toggler[i].addEventListener("click", function() {
-              this.parentElement.querySelector(".nested").classList.toggle("active");
-              this.classList.toggle("caret-down");
-          });
-      }
-    </script>
     <script>
       function save_content(btn) {
           var content = document.getElementById("editable").innerHTML;
