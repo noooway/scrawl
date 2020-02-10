@@ -1,4 +1,5 @@
 import os
+import pathlib
 from flask import (
     current_app,
     Blueprint, render_template, request,
@@ -22,7 +23,7 @@ def render_page(filename):
     if request.method == 'POST':
         # todo: security
         content = request.form['content']
-        print(content)
+        print('content = ', content)
         fullpath = safe_join(path, filename)
         with open(fullpath, 'w') as f:
             f.write(content)
@@ -38,9 +39,12 @@ def render_page(filename):
 def create_page():
     # todo: security;
     # http://lucumr.pocoo.org/2010/12/24/common-mistakes-as-web-developer/
-    pagename = request.form['page_name']
+    dir_name = request.form['page_name']
+    pagename = '{}/content.html'.format(dir_name)
     path = current_app.config['PAGESPATH']
+    dir_path = safe_join(path, dir_name)
     fullpath = safe_join(path, pagename)
+    pathlib.Path(dir_path).mkdir(parents=True, exist_ok=True)
     with open(fullpath, "a+") as f:
         create_text = '<div id="content">\n Scrawl! \n</div>'
         f.write(create_text)
