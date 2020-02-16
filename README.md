@@ -1,5 +1,9 @@
-# scrawl
+# Scrawl
 Note-taking Software
+
+<p align="center">
+<a href="https://ibb.co/Nx7RkrW"><img src="https://ibb.co/Nx7RkrW" width="400"/></a>
+</p>
 
 Installation:
 ``` shell
@@ -8,7 +12,7 @@ cd scrawl
 pip3 install -r requirements.txt
 ```
 
-For testing, start server with:
+For testing start server with:
 ``` shell
 flask run
 ```
